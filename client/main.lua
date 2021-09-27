@@ -1,8 +1,11 @@
 --[[
 
-  ESX RP Chat #Modified by Druganov for Kronenburg Roleplay
+https://github.com/GJSBRT/esx_rpchat
+#GSBRT#0001
 
---]]
+esx_rpchat edited by 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 and GSBRT#0001, logs to discord included
+
+]]--
 
 ESX                           = nil
 
@@ -71,8 +74,4 @@ exports('PrintToChat', PrintFancyMessage)
 RegisterCommand('notifytest', function()
 	exports['mythic_notify']:DoVeryLongHudText('success', ('Test'))
 
-	
-	
 	end, false)
-
-

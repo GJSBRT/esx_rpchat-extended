@@ -1,0 +1,15 @@
+Locales['nl'] = {
+	['ooc_help'] = 'typ een uit karakter bericht',
+	['ooc_prefix'] = 'OOC | %s',
+	['twt_help'] = 'stuur een tweet',
+	['twt_prefix'] = '^0[^4Twitter^0] (^5@%s^0)',
+	['me_help'] = 'persoonlijke actie',
+	['me_prefix'] = 'me | %s',
+	['do_help'] = 'RP Informatie',
+	['do_prefix'] = 'do | %s',
+	['news_help'] = 'mededeling (niet misbruiken)',
+	['news_prefix'] = 'nieuws | %s',
+	['ooc_argument_name'] = 'bericht',
+	['ooc_argument_help'] = 'het bericht',
+	['ooc_unknown_command'] = '^3%s^0 is geen geldig commando!',
+}

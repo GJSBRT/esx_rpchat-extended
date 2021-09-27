@@ -1,14 +1,10 @@
 --[[
 
 https://github.com/GJSBRT/esx_rpchat
-#GSBRT#0001
+GSBRT#0001
 
-esx_rpchat edited by 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843, logs to discord included
+esx_rpchat edited by 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 and GSBRT#0001, logs to discord included
 
-EN OOK DOOR BLUB HA!
-
-[UPDATE]
-blacklisted words included DOOR BLUB LALALALALALA
 ]]--
 
 ESX = nil
@@ -16,49 +12,7 @@ ESX = nil
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 local mode = "kick"
-
--- kick message (if 'mode' is set to 'kick')
-local kickmessage = "Kicked by: Druganov\nReason: Ongepaste woorden in chat typen"
-
-local chatlog = "DISCORD_WEBHOOK_URL"
-local blacklistlog = "DISCORD_WEBHOOK_URL"
-local overheidslog = "DISCORD_WEBHOOK_URL"
 local lastMessage = 0
-
-
-
-
--- blacklisted words (in lowercase)
-local blacklist = {
-    "kanker",
-    "kkr",
-    "kankel",
-    "opgekankert",
-    "opgekaneld",
-    "kkjalla",
-    "kankerhoer",
-    "kkhoer",
-    "kkrhoer",
-    "nigger",
-    "kkrnigger",
-    "kankernigger",
-    "kkslet",
-    "kkrslet",
-    "kankerslet",
-    "nigga",
-    "niggas",
-    "kkrnigga",
-    "kkrniggas",
-    "kknigga",
-    "kkniggas",
-    "niggers",
-    "kutnegers",
-    "kutniggers",
-    "kutnigger"
-}
--- END OF CONFIGURATION
-
-
 
 RegisterCommand('twt', function(source, args, rawCommand)
 	local playerName = GetPlayerName(source)
@@ -66,7 +20,7 @@ RegisterCommand('twt', function(source, args, rawCommand)
     local naampie = GetRealPlayerName(source)
     local ids = ExtractIdentifiers(source)
     local discord =  "<@" ..ids.discord:gsub("discord:", "")..">"
-	if(IsPlayerAceAllowed(source, "kronenburg:chatbypass"))  -- Checks for bypass permission
+	if(IsPlayerAceAllowed(source, "rpchat:chatbypass"))  -- Checks for bypass permission
 		then 
 			CancelEvent() -- Stops event 
 		else
@@ -130,14 +84,14 @@ RegisterCommand('twt', function(source, args, rawCommand)
         end
 
 		local send = true
-		for i in pairs(blacklist) do -- Checks blacklist
-			if(output:find(blacklist[i])) then
+		for i in pairs(Config.Blacklist) do -- Checks Config.Blacklist
+			if(output:find(Config.Blacklist[i])) then
 				-- Bad word detected
 				if(mode == "delete") then
 					-- Deletes message
 				elseif(mode == "kick") then
-					PerformHttpRequest(blacklistlog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Blacklisted word kick", description = " "..playerName.."** probeerde **"..msg.."** te zeggen in ooc en is daarvoor gekickt\nIngame naam: **"..naampie.."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")}, color=0}}}),  { ['Content-Type'] = 'application/json' })
-					DropPlayer(source, kickmessage) -- Kicks player
+					PerformHttpRequest(Config.BlacklistLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Blacklisted word kick", description = " "..playerName.."** probeerde **"..msg.."** te zeggen in ooc en is daarvoor gekickt\nIngame naam: **"..naampie.."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")}, color=0}}}),  { ['Content-Type'] = 'application/json' })
+					DropPlayer(source, Config.KickMessage) -- Kicks player
 				end
 				send = false -- sets send to false so message doesnt get sent
 				break
@@ -151,7 +105,7 @@ RegisterCommand('twt', function(source, args, rawCommand)
                 return
             end
           lastMessage = GetGameTimer()
-            PerformHttpRequest(chatlog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Twitter", description = " "..naampie..": "..msg.."**\nSteamnaam: **"..GetPlayerName(source).."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=1876210}}}),  { ['Content-Type'] = 'application/json' })
+            PerformHttpRequest(Config.ChatLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Twitter", description = " "..naampie..": "..msg.."**\nSteamnaam: **"..GetPlayerName(source).."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=1876210}}}),  { ['Content-Type'] = 'application/json' })
             TriggerClientEvent('chat:addMessage', -1, {
                 template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(28, 160, 242, 0.6); border-radius: 10px;"><i class="fab fa-twitter"></i> @{0}:<br> {1}</div>',
                 args = { naampie, msg }
@@ -170,7 +124,7 @@ RegisterCommand('staff', function(source, args, rawCommand)
     local naampie = GetRealPlayerName(source)
     local ids = ExtractIdentifiers(source)
     local discord =  "<@" ..ids.discord:gsub("discord:", "")..">"
-	if(IsPlayerAceAllowed(source, "kronenburg:chatbypass"))  -- Checks for bypass permission
+	if(IsPlayerAceAllowed(source, "rpchat:chatbypass"))  -- Checks for bypass permission
 		then 
 			CancelEvent() -- Stops event 
 		else
@@ -240,8 +194,8 @@ RegisterCommand('staff', function(source, args, rawCommand)
 				if(mode == "delete") then
 					-- Deletes message
 				elseif(mode == "kick") then
-					PerformHttpRequest(blacklistlog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Blacklisted word kick", description = " "..playerName.."** probeerde **"..msg.."** te zeggen in ooc en is daarvoor gekickt\nIngame naam: **"..naampie.."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")}, color=0}}}),  { ['Content-Type'] = 'application/json' })
-					DropPlayer(source, kickmessage) -- Kicks player
+					PerformHttpRequest(Config.BlacklistLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Blacklisted word kick", description = " "..playerName.."** probeerde **"..msg.."** te zeggen in ooc en is daarvoor gekickt\nIngame naam: **"..naampie.."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")}, color=0}}}),  { ['Content-Type'] = 'application/json' })
+					DropPlayer(source, Config.KickMessage) -- Kicks player
 				end
 				send = false -- sets send to false so message doesnt get sent
 				break
@@ -250,7 +204,7 @@ RegisterCommand('staff', function(source, args, rawCommand)
 		if(send) then -- if true then message gets sent
             if(IsPlayerAceAllowed(source, "command"))
             then 
-            PerformHttpRequest(chatlog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Staff", description = " "..GetPlayerName(source)..": "..msg.."**\nID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=16625167}}}),  { ['Content-Type'] = 'application/json' })
+            PerformHttpRequest(Config.ChatLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Staff", description = " "..GetPlayerName(source)..": "..msg.."**\nID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=16625167}}}),  { ['Content-Type'] = 'application/json' })
             TriggerClientEvent('chat:addMessage', -1, {
                 template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(253, 174, 15, 0.6); border-radius: 10px;"><i class="fas fa-crown"></i> ^*Kronenburg Roleplay Staff^r {0}:<br> {1}</div>',
                 args = { playerName, msg }
@@ -280,7 +234,7 @@ AddEventHandler('politiebericht', function(args)
             TriggerClientEvent('chat:addMessage', -1, {
                 template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(17, 58, 140, 0.7); border-radius: 10px;"><i class="fab fa-twitter"></i> Politie Kronenburg:<br> ' .. table.concat(args, " ") .. '</div>',
             })
-        PerformHttpRequest(overheidslog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Politie tweet", description = " **"..GetPlayerName(source).."**: ".. table.concat(args, " ") .."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nRang: **"..xPlayer.job.grade_label.."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=1129100}}}),  { ['Content-Type'] = 'application/json' })
+        PerformHttpRequest(Config.OverheidsLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Politie tweet", description = " **"..GetPlayerName(source).."**: ".. table.concat(args, " ") .."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nRang: **"..xPlayer.job.grade_label.."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=1129100}}}),  { ['Content-Type'] = 'application/json' })
 end)
 
 RegisterServerEvent('anwbbericht')
@@ -298,7 +252,7 @@ AddEventHandler('anwbbericht', function(args)
             TriggerClientEvent('chat:addMessage', -1, {
                 template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(135, 90, 7, 0.7); border-radius: 10px;"><i class="fab fa-twitter"></i> ANWB Kronenburg:<br> ' .. table.concat(args, " ") .. '</div>',
             })
-        PerformHttpRequest(overheidslog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "ANWB tweet", description = " **"..GetPlayerName(source).."**: ".. table.concat(args, " ") .."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nRang: **"..xPlayer.job.grade_label.."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=8870407}}}),  { ['Content-Type'] = 'application/json' })
+        PerformHttpRequest(Config.OverheidsLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "ANWB tweet", description = " **"..GetPlayerName(source).."**: ".. table.concat(args, " ") .."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nRang: **"..xPlayer.job.grade_label.."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=8870407}}}),  { ['Content-Type'] = 'application/json' })
 end)
 
 RegisterServerEvent('ambubericht')
@@ -316,7 +270,7 @@ AddEventHandler('ambubericht', function(args)
             TriggerClientEvent('chat:addMessage', -1, {
                 template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(229, 190, 1, 0.7); border-radius: 10px;"><i class="fab fa-twitter"></i> Ambulance Kronenburg:<br> ' .. table.concat(args, " ") .. '</div>',
             })
-        PerformHttpRequest(overheidslog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Ambulance tweet", description = " **"..GetPlayerName(source).."**: ".. table.concat(args, " ") .."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nRang: **"..xPlayer.job.grade_label.."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=15056385}}}),  { ['Content-Type'] = 'application/json' })
+        PerformHttpRequest(Config.OverheidsLog, function(err, text, headers) end, 'POST', json.encode({embeds={{title = "Ambulance tweet", description = " **"..GetPlayerName(source).."**: ".. table.concat(args, " ") .."**\nSpeler ID: **"..source.."**\nSteamHex: **"..GetPlayerIdentifier(source).."**\nRang: **"..xPlayer.job.grade_label.."**\nDiscord: **"..discord.."", footer = { text = " © 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 📅 "..os.date("%d/%m/%Y - %X")},  color=15056385}}}),  { ['Content-Type'] = 'application/json' })
 end)
 
 

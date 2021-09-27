@@ -1,5 +1,8 @@
 # esx_rpchat-extended
 
+![Example 1](https://cdn.discordapp.com/attachments/814454433106755585/892180355266777088/unknown.png)
+![Example 2](https://cdn.discordapp.com/attachments/814454433106755585/892180921191653426/unknown.png)
+
 ## A extended version of esx_rpchat
 Features:
 - anti chat spam
