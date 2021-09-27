@@ -1,4 +1,4 @@
-# esx_rpchat
+# esx_rpchat-extended
 
 ## A extended version of esx_rpchat
 Features:
