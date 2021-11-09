@@ -1,6 +1,6 @@
 --[[
 
-https://github.com/GJSBRT/esx_rpchat
+https://github.com/GJSBRT/esx_rpchat-extended
 GSBRT#0001
 
 esx_rpchat edited by 𝘿𝙧𝙪𝙜𝙖𝙣𝙤𝙫#6843 and GSBRT#0001, logs to discord included
