@@ -25,7 +25,7 @@ Features:
 - anwb mededelingen
 - /ID laat speler id zien
 
-# CHEAP AND GOOD GAME HOSTING
+# PREMIUM GAME AND SERVER HOSTING
 If you need good and cheap hosting https://dutchis.net
 Use code **GSBRT10** for 10% off your first server ;)
 
